@@ -71,7 +71,7 @@ mkdocs_deploy:
 	mkdocs gh-deploy --force
 
 # https://squidfunk.github.io/mkdocs-material/creating-your-site/
-mkdocs_serves:
+mkdocs_serve:
 	mkdocs serve
 
 mkdocs_build:
