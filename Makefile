@@ -2,26 +2,43 @@ PACKAGE_NAME = mypkg
 PACKAGE_SRC = src/$(PACKAGE_NAME)
 
 
-################################## MKDocs-Material Documentation Website Generation ##################################
-# https://squidfunk.github.io/mkdocs-material/
-MKDOCS_FOLDER = docs
 
-# https://squidfunk.github.io/mkdocs-material/publishing-your-site/
-mkdocs_deploy:
-	mkdocs gh-deploy --force
 
-# https://squidfunk.github.io/mkdocs-material/creating-your-site/
-mkdocs_serves:
-	mkdocs serve
+################################## building ##################################
+install:
+	pip install .
 
-mkdocs_build:
-	mkdocs build
+uninstall:
+	pip uninstall $(PACKAGE_NAME)
 
-# https://squidfunk.github.io/mkdocs-material/getting-started/
-mkdocs_setup:
-	-pip install mkdocs
-	-pip install mkdocs-material
-	mkdocs new .
+
+clean_build:
+	-rm -r $(PACKAGE_NAME).egg-info
+	-rm -r dist
+	-rm -r build
+
+
+################################## testing ##################################
+pytest:
+	cd tests; pytest *.py
+
+################################## linting ##################################
+mypy:
+	python -m mypy $(PACKAGE_SRC) --python-version=3.11
+
+
+
+################################## Virtual Environments ##################################
+VIRTUAL_ENV_NAME = myenv
+
+venv_new: 
+	python -m venv $(VIRTUAL_ENV_NAME)
+
+venv_activate:
+	source $(VIRTUAL_ENV_NAME)/bin/activate
+
+venv_deactivate:
+	deactivate
 
 
 ################################## Compiling Examples ##################################
@@ -44,45 +61,24 @@ requirements:
 
 
 
-install:
-	pip install .
 
-uninstall:
-	pip uninstall simplechatbot
+################################## MKDocs-Material Documentation Website Generation ##################################
+# https://squidfunk.github.io/mkdocs-material/
+MKDOCS_FOLDER = docs
 
+# https://squidfunk.github.io/mkdocs-material/publishing-your-site/
+mkdocs_deploy:
+	mkdocs gh-deploy --force
 
-################## building ##################
-build:
-	# install latest version of compiler software
-	pip install --user --upgrade setuptools wheel
-	
-	# actually set up package
-	python setup.py sdist bdist_wheel
-	
+# https://squidfunk.github.io/mkdocs-material/creating-your-site/
+mkdocs_serves:
+	mkdocs serve
 
-clean_build:
-	-rm -r $(PACKAGE_NAME).egg-info
-	-rm -r dist
-	-rm -r build
+mkdocs_build:
+	mkdocs build
 
-################## testing / linting ##################
-test:
-	cd tests; pytest *.py
-
-mypy:
-	python -m mypy $(PACKAGE_NAME) --python-version=3.11
-
-
-
-################################## Virtual Environments ##################################
-VIRTUAL_ENV_NAME = myenv
-
-venv_new: 
-	python -m venv $(VIRTUAL_ENV_NAME)
-
-venv_activate:
-	source $(VIRTUAL_ENV_NAME)/bin/activate
-
-venv_deactivate:
-	deactivate
-
+# https://squidfunk.github.io/mkdocs-material/getting-started/
+mkdocs_setup:
+	-pip install mkdocs
+	-pip install mkdocs-material
+	mkdocs new .
