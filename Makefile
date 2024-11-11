@@ -77,12 +77,12 @@ mypy:
 ################################## Virtual Environments ##################################
 VIRTUAL_ENV_NAME = myenv
 
-env_new: 
+venv_new: 
 	python -m venv $(VIRTUAL_ENV_NAME)
 
-env_activate:
+venv_activate:
 	source $(VIRTUAL_ENV_NAME)/bin/activate
 
-env_deactivate:
+venv_deactivate:
 	deactivate
 
